@@ -22,7 +22,7 @@ permtest<-function(datamatrix, designmatrix, distance="euclid", nperms=1000, max
 		{
 			if(is.null(designmatrix[i,j]) || is.nan(designmatrix[i,j]))
 			{
-				print("NaN's or NA's not allowed in designmatrix");
+				#print("NaN's or NA's not allowed in designmatrix");
 				return("NaN's or NA's not allowed in designmatrix");
 			}
 		}
@@ -33,14 +33,17 @@ permtest<-function(datamatrix, designmatrix, distance="euclid", nperms=1000, max
 		nperms<-maxperms;
 	}
 	n2 <- sum(as.double(unlist(as.vector(t(designmatrix[2,])))));
+
+
 	n1 <- ncol(designmatrix)-n2;
+
 	n <- n1 + n2;
 	dim <- nrow(datamatrix);
 	ispaired<-FALSE;
 	isblocked<-FALSE;
 	if(!(designtype=="paired")&&!(designtype=="blocked")&&!(designtype=="random"))
 	{
-		print("Unknown designtype");
+		#print("Unknown designtype");
 		return("Unknown designtype");	
 	}
 	if(designtype=="paired")
@@ -54,8 +57,10 @@ permtest<-function(datamatrix, designmatrix, distance="euclid", nperms=1000, max
 	colnames(designmatrix)<-designmatrix[1,];
 
 	tdesignmatrix<-designmatrix;
+
 	for(i in 1:ncol(datamatrix))
 	{
+
 		tdesignmatrix[1:nrow(tdesignmatrix),i]<-designmatrix[1:nrow(designmatrix),colnames(datamatrix)[i]];
 	}
  	designmatrix<-tdesignmatrix; 
@@ -66,17 +71,17 @@ permtest<-function(datamatrix, designmatrix, distance="euclid", nperms=1000, max
  	for(i in 1:ncol(datamatrix))
 	{
 		tdatamatrix[1:nrow(tdatamatrix),i]<-datamatrix[1:nrow(datamatrix),indexofsort[i]]
+
 		tdesignmatrix[1:nrow(tdesignmatrix),i]<-designmatrix[1:nrow(designmatrix),indexofsort[i]]
 	}
  	designmatrix<-tdesignmatrix; 
 	datamatrix<-tdatamatrix;
 	colnames(designmatrix)<-designmatrix[1,];
 	colnames(datamatrix)<-designmatrix[1,];
-
 #check for missing data items
 	if((sum(as.integer(colnames(datamatrix)==colnames(designmatrix))) != ncol(datamatrix)))
 	{
-		print("Designmatrix is incomplete or contains duplicates")
+		#print("Designmatrix is incomplete or contains duplicates")
 		return("Designmatrix is incomplete or contains duplicates")
 	}
 
@@ -168,7 +173,7 @@ permtest<-function(datamatrix, designmatrix, distance="euclid", nperms=1000, max
 			{
 				if(is.nan(dmat[i,j]))
 				{
-print("negative logs detected, must use distance:euclid")
+#print("negative logs detected, must use distance:euclid")
 					distance<-"euclid";
 					return("negative logs detected, must use distance:euclid");
 				}
@@ -224,7 +229,6 @@ print("negative logs detected, must use distance:euclid")
 ########################################	
 #      	cell means and test statistics
 ########################################
-
 	if(isblocked)
 	{
 		runn11<-0;
@@ -242,11 +246,8 @@ print("negative logs detected, must use distance:euclid")
 				i1[(n1+1):(n1+n2),1]<-0;
 			}
 			i1[,2]<-!i1[,1];
-
 			tdmat<-dmat[blkctl[1,i]:blkctl[2,i],blkctl[1,i]:blkctl[2,i]];
-
 			sums<-(t(i1)%*%tdmat%*%i1);
-
 			runn11<-runn11+sums[1,1];
 			runn22<-runn22+sums[2,2];
 			runn12<-runn12+sums[1,2];			
@@ -273,7 +274,6 @@ print("negative logs detected, must use distance:euclid")
 			{
 				mn12<-runn12;
 			}
-		
 		rdiff<-mn11-mn22;
 		adiff<-abs(mn22-mn11);
 		sum<-mn12-(mn11+mn22)/2;		
@@ -281,10 +281,24 @@ print("negative logs detected, must use distance:euclid")
 
 	}else
 	{
+
 		n<-n1+n2
 		n11<-n1*n1-n1;
 		n22<-n2*n2-n2;
 		n12<-n1*n2;
+		
+		if(n11==0)
+		{
+			n11=1;
+		}
+		if(n22==0)
+		{
+			n22=1;
+		}
+		if(n12==0)
+		{
+			n12=1;
+		}
 
 		if(ispaired)
 		{	
@@ -295,11 +309,12 @@ print("negative logs detected, must use distance:euclid")
 		i3 <- rnorm((n1+n2)*(n1+n2),1,0);
 		dim(i3) <- c((n1+n2),(n1+n2));
 		i1 <- i3[1:(n1+n2),1:2];            
+
+
 		i1[(n1+1):(n1+n2),1] <- i2[(n1+1):(n1+n2),1];           
 		i1[1:n1,2] <- i2[1:n1,2];  
-		
-		sums<-(t(i1)%*%dmat%*%i1);
 
+		sums<-(t(i1)%*%dmat%*%i1);
 
 		mn11<-sums[1,1]/n11;
 		mn22<-sums[2,2]/n22;
@@ -315,7 +330,6 @@ print("negative logs detected, must use distance:euclid")
 	countadiff<-0;
 	countsum<-0;
 	countomnibus<-0;
-	
 	distrdiff<-list();
 	distadiff<-list();
 	distsum<-list();
@@ -466,7 +480,7 @@ print("negative logs detected, must use distance:euclid")
 		}
 		if(n1>=13)
 		{
-print("Total cols exceed 13, switching from enumerations to random sampling")
+#print("Total cols exceed 13, switching from enumerations to random sampling")
 			nperms<-maxperms;
 			for (i in 1:maxperms)
 			{
@@ -513,7 +527,7 @@ print("Total cols exceed 13, switching from enumerations to random sampling")
 		}
 	}
 	if((!ispaired)&&(!isblocked))
-	{
+	{	
 		for (i in 1:nperms)
 		{
 			pi<-matrix(nrow=(n1+n2),ncol=2);
@@ -529,10 +543,8 @@ print("Total cols exceed 13, switching from enumerations to random sampling")
 			padiff<-abs(pmn22-pmn11);
 			psum<-pmn12-(pmn11+pmn22)/2;		
 			pomnibus<-pmn12-pmn11;
-
 			countsum<-countsum+(psum>=sum);
 			countadiff<-countadiff+(padiff>=adiff);
-
 			if(rdiff <= 0)
 			{
 				countrdiff<-countrdiff+(prdiff<=rdiff);

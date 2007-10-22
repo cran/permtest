@@ -133,6 +133,7 @@ permtest(datamatrix,designmatrix)
 #Add pairing information, we can run as paired
 #each pair item follows it's group's mean and std dev
 #each pair has a common mean and deviation deflection
+\dontrun{
 datamatrix<-matrix(data=c(
 
 #group 1 mean is .1, std dev 1.25
@@ -154,6 +155,7 @@ colnames(designmatrix)<-designmatrix[1,];
 colnames(datamatrix)<-colnames(designmatrix);
 designmatrix<-t(designmatrix);
 permtest(datamatrix,designmatrix,designtype="paired")
+}
 }
 \keyword{ misc }
 \keyword{ utilities }
