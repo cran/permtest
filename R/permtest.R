@@ -14,13 +14,14 @@ permtest<-function(datamatrix, designmatrix, distance="euclid", nperms=1000, max
 			v[i]<-FALSE;
 		}
 	}
+#t(as.matrix(datamatrix));
 	datamatrix<-datamatrix[v,];
 #check designmatrix for nan's/na's
 	for(i in 1:nrow(designmatrix))
 	{
 		for(j in 1:ncol(designmatrix))
 		{
-			if(is.null(designmatrix[i,j]) || is.nan(designmatrix[i,j]))
+			if(is.null(designmatrix[i,j]) || is.nan(unlist(designmatrix[i,j])))
 			{
 				#print("NaN's or NA's not allowed in designmatrix");
 				return("NaN's or NA's not allowed in designmatrix");

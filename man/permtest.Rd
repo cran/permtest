@@ -112,8 +112,6 @@ variability.
 	\item{out$distributions$equiv}{Observed permutation distribution from the equivalence test}
 	\item{out$distancematrix}{The distance matrix}
 }
-\references{
-}
 \author{ Douglas Hayden and Peter Lazar}
 \examples{
 #Make a data set with no pairing, slight group mean differences and slight differences in variation
